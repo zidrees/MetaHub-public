@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% load static %}
+{##}
+{#{% block title %}#}
+{#  Your shopping cart#}
+{#{% endblock %}#}
+{##}
+{% block content %}
+{#  <h1>Your shopping cart</h1>#}
+{#  <table class="cart">#}
+{#    <thead>#}
+{#      <tr>#}
+{#        <th>Image</th>#}
+{#        <th>Product</th>#}
+{#        <th>Quantity</th>#}
+{#        <th>Remove</th>#}
+{#        <th>Unit price</th>#}
+{#        <th>Price</th>#}
+{#      </tr>#}
+{#    </thead>#}
+{#    <tbody>#}
+{#      {% for item in cart %}#}
+{#        {% with product=item.product %}#}
+{#          <tr>#}
+{#            <td>#}
+{#              <a href="{{ product.get_absolute_url }}">#}
+{#                <img src="{% if product.image %}{{ product.image.url }}#}
+{#                {% else %}{% static "img/no_image.png" %}{% endif %}">#}
+{#              </a>#}
+{#            </td>#}
+{#            <td>{{ product.name }}</td>#}
+{#            <td>#}
+{#              <form action="{% url "cart:cart_add" product.id %}" method="post">#}
+{#                {{ item.update_quantity_form.quantity }}#}
+{#                {{ item.update_quantity_form.override }}#}
+{#                <input type="submit" value="Update">#}
+{#                {% csrf_token %}#}
+{#              </form>#}
+{#            </td>#}
+{#            <td>#}
+{#              <form action="{% url "cart:cart_remove" product.id %}" method="post">#}
+{#                <input type="submit" value="Remove">#}
+{#                {% csrf_token %}#}
+{#              </form>#}
+{#            </td>#}
+{#            <td class="num">${{ item.price }}</td>#}
+{#            <td class="num">${{ item.total_price }}</td>#}
+{#          </tr>#}
+{#        {% endwith %}#}
+{#      {% endfor %}#}
+{#      <tr class="total">#}
+{#        <td>Total</td>#}
+{#        <td colspan="4"></td>#}
+{#        <td class="num">${{ cart.get_total_price }}</td>#}
+{#      </tr>#}
+{#    </tbody>#}
+{#  </table>#}
+{#  <p class="text-right">#}
+{#    <a href="{% url "products:product_list" %}" class="button#}
+{#    light">Continue shopping</a>#}
+{#    <a href="#" class="button">#}
+{#      Checkout#}
+{#    </a>#}
+{#  </p>#}
+{#{% endblock %}#}
+ <section id="shop-cart">
+            <div class="container">
+                <div class="shop-cart">
+                    <div class="table table-sm table-striped table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="cart-product-remove"></th>
+                                    <th class="cart-product-thumbnail">Product</th>
+                                    <th class="cart-product-name"> Product Category </th>
+                                    <th class="cart-product-price">Unit Price</th>
+                                    <th class="cart-product-subtotal">Total</th>
+                                </tr>
+                            </thead>
+                             {% for item in cart %}
+                            {% with product=item.product %}
+                            <tbody>
+                                <tr>
+{#                                    <td class="cart-product-remove">#}
+{#                                         <form action="{% url "cart:cart_remove" product.id %}" method="post">#}
+{#                                            <input class="btn btn-danger" type="submit" value="Remove">#}
+{#                                            {% csrf_token %}#}
+{#                                          </form>#}
+{#                                       #}
+                                  {% if product.product_brand == 'walmart' %}
+                                    <td class="cart-product-thumbnail">
+                                        <a href="#">
+                                            <img src="{{ product.image }}" alt="">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="cart-product-thumbnail-name">{{ product.title }}</div>
+                                    </td>
+                                    <td class="cart-product-description">
+                                        {{ product.department }}
+                                    </td>
+                                    <td class="cart-product-price">
+                                        <span class="amount">{{ product.price }}</span>
+                                    </td>
+
+                                    <td class="cart-product-subtotal">
+                                        <span class="amount"> {{ item.total_price}} $ </span>
+                                    </td>
+                                {% endif %}
+                                </tr>
+
+                            </tbody>
+                            {% endwith %}
+                        {% endfor %}
+                        </table>
+                    <h2> Target Cart </h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="cart-product-remove"></th>
+                                    <th class="cart-product-thumbnail">Product</th>
+                                    <th class="cart-product-name"> Product Category </th>
+                                    <th class="cart-product-price">Unit Price</th>
+
+                                </tr>
+                            </thead>
+                             {% for item in cart %}
+                            {% with product=item.product %}
+                            <tbody>
+                                <tr>
+{#                                    <td class="cart-product-remove">#}
+{#                                         <form action="{% url "cart:cart_remove" product.id %}" method="post">#}
+{#                                            <input class="btn btn-danger" type="submit" value="Remove">#}
+{#                                            {% csrf_token %}#}
+{#                                          </form>#}
+{#                                       #}
+                                  {% if product.product_brand == 'target' %}
+                                    <td class="cart-product-thumbnail">
+                                        <a href="#">
+                                            <img src="{{ product.image }}{{ product.primary_image }}" alt="" style="width:100px;" height="100px;">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="cart-product-thumbnail-name">{{ product.title }}</div>
+                                    </td>
+                                    <td class="cart-product-description">
+                                        {{ product.merch_class }}
+                                    </td>
+                                    <td class="cart-product-price">
+                                        <span class="amount">{{ product.price }}</span>
+                                    </td>
+
+                                    <td class="cart-product-subtotal">
+                                        <span class="amount"> {{ item.total_price}} $ </span>
+                                    </td>
+                                {% endif %}
+                                </tr>
+
+                            </tbody>
+                            {% endwith %}
+                        {% endfor %}
+                        </table>
+
+
+
+                    </div>
+
+                </div>
+                <div class="row">
+                        <hr class="space">
+                        <div class="col-lg-6">
+                            <h4>Calculate Shipping</h4>
+                        </div>
+                        <div class="col-lg-6 p-r-10 ">
+                            <div class="table-responsive">
+                                <h4>Cart Subtotal</h4>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="cart-product-name">
+                                                <strong>Walmart total</strong>
+                                            </td>
+                                            <td class="cart-product-name text-right">
+                                                <span class="amount">{{cart.get_total_price_walmart }}$ </span>
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="cart-product-name">
+                                                <strong> Target Total</strong>
+                                            </td>
+                                            <td class="cart-product-name text-right">
+                                                <span class="amount color lead"><strong>{{ cart.get_total_price_target }}$ </strong></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+{#                            <a href="{% url "orders:order_create" %}" class="btn icon-left float-right"><span>Proceed to Checkout</span></a>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <p class="text-right"></p>
+
+ </section>
+
+{% endblock %}

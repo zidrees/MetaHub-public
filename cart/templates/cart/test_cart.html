@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
+<body>
+
+
+        {% for item in cart %}
+            {% with product=item.product %}
+                            <tbody>
+                                <tr>
+{#                                    <td class="cart-product-remove">#}
+{#                                         <form action="{% url "cart:cart_remove" product.id %}" method="post">#}
+{#                                            <input class="btn btn-danger" type="submit" value="Remove">#}
+{#                                            {% csrf_token %}#}
+{#                                          </form>#}
+{#                                       #}
+                                {% if product.product_brand == 'walmart' %}
+                                    <p> Walmart Cart </p>
+                                    <td class="cart-product-thumbnail">
+                                        <a href="#">
+                                            <img src="{{ product.image }}" alt="">
+                                        </a>
+                                        <div class="cart-product-thumbnail-name">{{ product.title }}</div>
+                                    </td>
+{#                                    <td class="cart-product-description">#}
+{#                                        {{ product.department }}#}
+{#                                    </td>#}
+                                    <td class="cart-product-price">
+                                        <span class="amount">{{ product.price }}</span>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% endwith %}
+
+            {% empty %}
+                    <p>nothing to show</p>
+                            {% endfor %}
+                              <td class="cart-product-name text-right">
+                                    <p> Total Walmart Cart Price  </p>
+                                    <span class="amount color lead"><strong>{{cart.get_total_price_walmart }}$</strong></span>
+                                </td>
+        </tbody>
+
+          {% for item in cart %}
+            {% with product=item.product %}
+                            <tbody>
+                                <tr>
+
+                                {% if product.product_brand == 'target' %}
+                                    <p> Target Product </p>
+                                      <td class="cart-product-thumbnail">
+                                        <a href="#">
+                                            <img src="{{ product.image }}{{ product.primary_image }}" alt="">
+                                        </a>
+                                        <div class="cart-product-thumbnail-name">{{ product.title }}</div>
+                                    </td>
+{#                                    <td class="cart-product-description">#}
+{#                                        {{ product.department }}#}
+{#                                    </td>#}
+                                    <td class="cart-product-price">
+                                        <span class="amount">{{ product.price }}</span>
+                                    </td>
+                                </tr>
+
+                        {% endif %}
+
+            {% endwith %}
+
+               {% empty %}
+                    <p>nothing to show</p>
+            {% endfor %}
+                  <td class="cart-product-name text-right">
+                    <p> Total Target Cart Price  </p>
+                     <span class="amount color lead"><strong>{{cart.get_total_price_target }}$</strong></span>
+                  </td>
+        </tbody>
+</body>
+</html>

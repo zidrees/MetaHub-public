@@ -1,0 +1,12 @@
+  <div id="sidebar">
+    <h3>Categories</h3>
+    <ul>
+
+      {% for c in categories %}
+        <li style="display:inline; padding: 6px; margin: 5px;" {% if category.category_name == c.category_name %}class="selected"
+        {% endif %}>
+          <a href="{{ c.get_absolute_url }}">{{ c.category_name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>

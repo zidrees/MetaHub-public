@@ -1,0 +1,43 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Target Cart</title>
+</head>
+<body>
+
+
+        {% for item in cart %}
+            {% with product=item.product %}
+                            <tbody>
+                                <tr>
+{#                                    <td class="cart-product-remove">#}
+{#                                         <form action="{% url "cart:cart_remove" product.id %}" method="post">#}
+{#                                            <input class="btn btn-danger" type="submit" value="Remove">#}
+{#                                            {% csrf_token %}#}
+{#                                          </form>#}
+{#                                       #}
+
+                                    <td class="cart-product-thumbnail">
+                                        <a href="#">
+                                            <img src="{{product.images.0.base_url}}{{product.images.0.primary}}}" alt="">
+                                        </a>
+                                        <div class="cart-product-thumbnail-name">{{ product.title }}</div>
+                                    </td>
+                                    <td class="cart-product-description">
+                                        {{ product.march_class}}
+                                    </td>
+                                    <td class="cart-product-price">
+                                        <span class="amount">{{ product.price.formatted_current_price }}</span>
+                                    </td>
+                                </tr>
+            {% endwith %}
+
+            {% endfor %}
+            <td class="cart-product-name text-right">
+                <p> Total Price  </p>
+{#                <span class="amount color lead"><strong>{{cart.get_total_price}}$</strong></span>#}
+            </td>
+</body>
+</html>

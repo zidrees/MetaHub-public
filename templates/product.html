@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load products_tags %}
+
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+<div class = "container">
+       <div class="row">
+           <div class="col-md-10 col-sm-10">
+               {% include 'partials/category.html' %}
+           </div>
+           <div class="col-md-2 col-sm-6"></div>
+       </div>
+
+
+        <form method="get">
+
+              <div class="form-outline">
+                  <input type="search" name="query" id="form1" class="form-control" placeholder="Enter Keyword to Search Product from Walmart or Target "
+                  aria-label="Search" />
+              </div>
+              <input class="text-center btn-lg" type="submit" value="Search" style="margin-top: 10px;">
+        </form>
+
+
+  {% if category %}
+    <h1>Products containing "{{ category }}"</h1>
+
+        <div class="row">
+
+          {% for product in category_walmart_data %}
+            <div class="col-md-4" style="margin-top: 10px;">
+
+                    <img src="{{ product.image }}" alt="product-image" width="200px" height="200px">
+                    <li>{{ product.title|markdown|truncatechars:50 }}</li>
+                    <li>{{ product.department }}</li>
+                    <li>{{ product.price }}</li>
+
+                    <form action="{% url "cart:cart_add" product.usItemId %}" method="post">
+                        {{ cart_product_form }}
+                        {% csrf_token %}
+                      <input type="submit" value="Add to cart">
+                    </form>
+            </div>
+        {% empty %}
+            <p>There are no results for your query.</p>
+        {% endfor %}
+      </div>
+
+    <div class="row">
+          <h2> Target Product </h2>
+          {% for product in category_walmart_data %}
+
+            <div class="col-md-4" style="margin-top: 50px;">
+
+                    <img src="{{product.image}}{{product.primary_image}}" alt="product-image" width="200px" height="200px">
+                    <li>{{ product.title|markdown|truncatechars:50 }}</li>
+                    <li>{{ product.merch_class}}</li>
+                    <li>{{ product.price }}$</li>
+                     <form action="{% url "cart:cart_add" product.usItemId %}" method="post">
+                        {{  cart_product_form }}
+                        {% csrf_token %}
+                      <input type="submit" value="Add to cart">
+                    </form>
+            </div>
+     {% empty %}
+      <p>There are no results for your query.</p>
+    {% endfor %}
+    {% endif %}
+  {% if query %}
+
+    <h1>Products containing "{{ query }}"</h1>
+
+        <div class="row">
+{#          <h2 style="margin-bottom: 30px;"> Walmart Product </h2>#}
+          {% for product in walmart_data %}
+            <div class="col-md-4" style="margin-top: 10px;">
+
+                    <img src="{{ product.image }}" alt="product-image" width="200px" height="200px">
+                    <li style="list-style: none">{{ product.title|markdown|truncatechars:50 }}</li>
+                    <li>{{ product.department }}</li>
+                    <li>{{ product.price }}$</li>
+
+                    <form action="{% url "cart:cart_add" product.usItemId %}" method="post">
+                        {{ cart_product_form }}
+                        {% csrf_token %}
+                      <input type="submit" value="Add to cart">
+                    </form>
+            </div>
+
+    {% empty %}
+      <p>There are no results for your query.</p>
+    {% endfor %}
+        </div>
+      </div>
+
+    <div class="row">
+          <h2> Target Product </h2>
+          {% for product in target_data %}
+
+            <div class="col-md-4" style="margin-top: 50px;">
+
+                    <img src="{{product.image}}{{product.primary_image}}" alt="product-image" width="200px" height="200px">
+                    <li>{{ product.title|markdown|truncatechars:50 }}</li>
+                    <li>{{ product.merch_class}}</li>
+                    <li>{{ product.price }}</li>
+                     <form action="{% url "cart:cart_add" product.usItemId %}" method="post">
+                        {{  cart_product_form }}
+                        {% csrf_token %}
+                      <input type="submit" value="Add to cart">
+                    </form>
+            </div>
+
+    {% empty %}
+      <p>There are no results for your query.</p>
+    {% endfor %}
+
+    {% endif %}
+        </div>
+       </div>
+{% endblock %}

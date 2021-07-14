@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <link href="{% static "css/base.css" %}" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{% static 'images/icon.png' %}"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<style>
+  #ex4 .p1[data-count]:after {
+      position: absolute;
+      right: 10%;
+      top: 4%;
+      content: attr(data-count);
+      font-size: 40%;
+      padding: .2em;
+      border-radius: 50%;
+      line-height: 1em;
+      color: white;
+      background: rgba(255, 0, 0, .85);
+      text-align: center;
+      min-width: 1em;
+  / / font-weight: bold;
+  }
+  li {
+
+    list-style: none;
+  }
+  a {
+      color: black;
+      text-decoration: none;
+  }
+
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+      <img src="{% static 'images/logo.png' %}" width="50"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active" style="margin-top: 20px;">
+        <a class="nav-link" href="{% url "product:product_search" %}">Search Product From Walmart & Target Store  <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+           {% with total_items=cart|length %}
+    {% if total_items > 0 %}
+
+      <a class="nav-link" href="{% url "cart:cart_detail" %}">
+          <div id="ex4">
+              <span class="p1 fa-stack fa-2x has-badge" data-count="{{ total_items  }}">
+                <!--<i class="p2 fa fa-circle fa-stack-2x"></i>-->
+                <i class="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse" data-count="{{ total_items  }}"></i>
+              </span>
+         </div>
+      </a>
+    {% else %}
+          <a class="nav-link" href="{% url "cart:cart_detail" %}">
+            <span class="p1 fa-stack fa-2x has-badge" data-count="">
+                    <!--<i class="p2 fa fa-circle fa-stack-2x"></i>-->
+                <i class="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse" data-count=""></i>
+           </span>
+          </a>
+    {% endif %}
+  {% endwith %}
+
+      </li>
+
+
+    </ul>
+      {% if request.user.is_authenticated %}
+         Hello {{ request.user.username }},
+        <a href="{% url "logout" %}">Logout</a>
+    {% else %}
+      <a href="{% url "login" %}">Log-in</a>
+    {% endif %}
+  </div>
+</nav>
+
+
+{#  <div id="header" style="background-color: #000000;">#}
+{#    <span class="logo"><img src="{% static 'images/logo.png' %}" width="150" height="80"></span>#}
+{#    {% if request.user.is_authenticated %}#}
+{#    <ul class="menu">#}
+{#      <li class = 'text:bold;' {% if section == "Search" %}class="selected"{% endif %}>#}
+{#        <a href="{% url "product:product_search" %}"> Search Product From Walmart & Target Store </a>#}
+{#      </li>#}
+{#      <li class="cart">#}
+{#  {% with total_items=cart|length %}#}
+{#    {% if total_items > 0 %}#}
+{##}
+{#      <a href="{% url "cart:cart_detail" %}">#}
+{#          <div id="ex4">#}
+{#              <span class="p1 fa-stack fa-2x has-badge" data-count="{{ total_items  }}">#}
+{#                <!--<i class="p2 fa fa-circle fa-stack-2x"></i>-->#}
+{#                <i class="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse" data-count="{{ total_items  }}"></i>#}
+{#              </span>#}
+{#         </div>#}
+{#      </a>#}
+{#    {% else %}#}
+{#        <span class="p1 fa-stack fa-2x has-badge" data-count="">#}
+{#                <!--<i class="p2 fa fa-circle fa-stack-2x"></i>-->#}
+{#            <i class="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse" data-count=""></i>#}
+{#       </span>#}
+{#    {% endif %}#}
+{#  {% endwith %}#}
+{#</li>#}
+{##}
+{##}
+{#      <li {% if section == "images" %}class="selected"{% endif %}>#}
+{#        <a href="{% url "images:list" %}">Images</a>#}
+{#      </li>#}
+{#      <li {% if section == "people" %}class="selected"{% endif %}>#}
+{#        <a href="#">People</a>#}
+{#      </li>#}
+{#    </ul>#}
+{#  {% endif %}#}
+{#  <span class="user">#}
+{#    {% if request.user.is_authenticated %}#}
+{#      Hello {{ request.user.first_name }},#}
+{#      <a href="{% url "logout" %}">Logout</a>#}
+{#    {% else %}#}
+{#      <a href="{% url "login" %}">Log-in</a>#}
+{#    {% endif %}#}
+{#  </span>#}
+{#  </div>#}
+{##}
+{#  {% if messages %}#}
+{#    <ul class="messages">#}
+{#      {% for message in messages %}#}
+{#        <li class="{{ message.tags }}">#}
+{#          {{ message|safe }}#}
+{#            <a href="#" class="close">x</a>#}
+{#        </li>#}
+{#      {% endfor %}#}
+{#    </ul>#}
+{#  {% endif %}#}
+
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    var csrftoken = Cookies.get('csrftoken');
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+
+    $(document).ready(function(){
+      {% block domready %}
+      {% endblock %}
+    });
+  </script>
+
+</body>
+</html>
